@@ -45,7 +45,7 @@ Base.metadata.create_all(bind=engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-person = Person("AB1232", "C:\\Users\\AntonKotau\\Downloads\\509S3458.jpg", "Alen", "Wolf", "M", "+375298068085",
+person = Person("AB1232", "C:\\Users\\path", "Alen", "Wolf", "M", "+375298068085",
                 datetime(1986, 1, 1), "Był zauważen w okolicach")
 session.add(person)
 session.commit()
