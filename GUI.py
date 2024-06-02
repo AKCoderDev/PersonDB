@@ -3,7 +3,7 @@ import customtkinter
 import sql
 from tkinter import messagebox, filedialog
 # import ttkbootstrap as tb
-from datetime import datetime
+# import datetime
 
 
 customtkinter.set_appearance_mode("dark")
@@ -27,14 +27,33 @@ def hide_main():
     button_show_about.place_forget()
     button_exit.place_forget()
 
+
 def show_main_from_create():
     button_open.place(x=40, y=40)
     button_create.place(x=40, y=80)
     button_settings.place(x=40, y=120)
     button_show_about.place(x=40, y=160)
     button_exit.place(x=40, y=200)
+    passport_label.place_forget()
     passport_entry.place_forget()
+    photo_label.place_forget()
+    photo_entry.place_forget()
+    firstname_label.place_forget()
+    firstname_entry.place_forget()
+    lastname_label.place_forget()
+    lastname_entry.place_forget()
+    gender_label.place_forget()
+    gender_entry.place_forget()
+    phone_number_label.place_forget()
+    phone_number_entry.place_forget()
+    date_of_birthday_label.place_forget()
+    date_of_birthday_entry.place_forget()
+    notes_label.place_forget()
+    notes_entry.place_forget()
+    enter_button.place_forget()
+    back_to_main_from_create.place_forget()
     theme_button.place_forget()
+
 
 def show_main_from_settings():
     button_open.place(x=40, y=40)
@@ -46,23 +65,23 @@ def show_main_from_settings():
     theme_button.place_forget()
 
 
-
 # CREATE
 
 
-def create_person():
+def save_data():
     passport = passport_entry.get()
     photo = photo_entry.get()
     firstname = firstname_entry.get()
     lastname = lastname_entry.get()
     gender = gender_entry.get()
     phone_number = phone_number_entry.get()
-    date_of_birthday = tb.DateEntry(root, bootstyle='danger')
-    date_of_birthday.place(y=50, x=50)
+    date_of_birthday = date_of_birthday_entry.get()
     notes = notes_entry.get()
+    print(f"Date of Birthday: {date_of_birthday}")
 
     if not passport or not photo or not firstname or not lastname or not gender or not phone_number or not date_of_birthday:
         messagebox.showerror('Bład', 'Wszystkie pola muszą być wypełnione.')
+        print("Zapisano użytkownika do bazy danych.")
         return
 
 # creation of input fields
@@ -70,27 +89,24 @@ def create_person():
 
 def create():
     hide_main()
-    passport_entry = customtkinter.CTkEntry(
-        frame, placeholder_text="Passport ID")
-    photo_entry = customtkinter.CTkEntry(frame, placeholder_text="link")
-    firstname_entry = customtkinter.CTkEntry(
-        frame, placeholder_text="firstname")
-    lastname_entry = customtkinter.CTkEntry(frame, placeholder_text="lastname")
-    gender_entry = customtkinter.CTkEntry(frame, placeholder_text="gender")
-    phone_number_entry = customtkinter.CTkEntry(
-        frame, placeholder_text="phone number")
-    date_of_birthday_entry = customtkinter.CTkEntry(
-        frame, placeholder_text="date of birthday")
-    notes_entry = customtkinter.CTkEntry(frame, placeholder_text="Notes")
-    passport_entry.place(x=460, y=40)
-    photo_entry.place(x=460, y=80)
-    firstname_entry.place(x=460, y=120)
-    lastname_entry.place(x=460, y=160)
-    gender_entry .place(x=460, y=200)
-    phone_number_entry.place(x=460, y=240)
-    date_of_birthday_entry.place(x=460, y=280)
-    notes_entry.place(x=460, y=320)
-    back_to_main_from_settings.place(x=40, y=350)
+    passport_label.place(x=40, y=40)
+    passport_entry.place(x=141, y=40)
+    photo_label.place(x=40, y=80)
+    photo_entry.place(x=141, y=80)
+    firstname_label.place(x=40, y=120)
+    firstname_entry.place(x=141, y=120)
+    lastname_label.place(x=40, y=160)
+    lastname_entry.place(x=141, y=160)
+    gender_label.place(x=40, y=200)
+    gender_entry .place(x=141, y=200)
+    phone_number_label.place(x=40, y=240)
+    phone_number_entry.place(x=141, y=240)
+    date_of_birthday_label.place(x=40, y=280)
+    date_of_birthday_entry.place(x=141, y=280)
+    notes_label.place(x=40, y=320)
+    notes_entry.place(x=141, y=320)
+    enter_button.place(x=210, y=375)
+    back_to_main_from_create.place(x=40, y=375)
 
 # SETTINGS
 
@@ -98,7 +114,7 @@ def create():
 def settings():
     hide_main()
     theme_button.place(x=40, y=40)
-    back_to_main_from_settings.place(x=40, y=350)
+    back_to_main_from_settings.place(x=40, y=356)
 
 
 mode = 'dark'
@@ -119,9 +135,9 @@ def change_theme():
 def show_about():
     window_about = customtkinter.CTkToplevel()
     window_about.title('About')
-    # window_about.geometry('300x150')
+    window_about.geometry('300x200')
     window_width = 300
-    window_height = 150
+    window_height = 200
     window_about.geometry(f"{window_width}x{window_height}")
     window_about.after(100, window_about.lift)
     screen_width = window_about.winfo_screenwidth()
@@ -130,7 +146,13 @@ def show_about():
     y = (screen_height - window_height) // 2
     window_about.geometry(f"+{x}+{y}")
     label = customtkinter.CTkLabel(
-        window_about, wraplength=250, text='PersonDB is an application for browsing databases of people. The application allows you to add new records, search for existing records and change personal data. Version 0.0.0.1')
+        window_about, wraplength=250, text='PersonDB\n'
+        'Version 0.0.0.1\n'
+        'Developers: Antek\n'
+        'Contact: example@example.com\n'
+        'Website: example.com\n'
+        'License: example License\n'
+        'Copyright: © 2024 MyCompany\n')
     label.pack(padx=0.5, pady=40)
 
 # EXIT
@@ -139,6 +161,29 @@ def show_about():
 def close_app():
     root.destroy()
 
+
+# Input fields
+passport_label = customtkinter.CTkLabel(frame, text="Passport ID:")
+passport_entry = customtkinter.CTkEntry(
+    frame, placeholder_text="Passport ID")
+photo_label = customtkinter.CTkLabel(frame, text="Photo link:")
+photo_entry = customtkinter.CTkEntry(frame, placeholder_text="link")
+firstname_label = customtkinter.CTkLabel(frame, text="Firstname:")
+firstname_entry = customtkinter.CTkEntry(
+    frame, placeholder_text="firstname")
+lastname_label = customtkinter.CTkLabel(frame, text="Lastname:")
+lastname_entry = customtkinter.CTkEntry(frame, placeholder_text="lastname")
+gender_label = customtkinter.CTkLabel(frame, text="Gender:")
+gender_entry = customtkinter.CTkEntry(frame, placeholder_text="gender")
+phone_number_label = customtkinter.CTkLabel(frame, text="Phone number:")
+phone_number_entry = customtkinter.CTkEntry(
+    frame, placeholder_text="phone number")
+date_of_birthday_label = customtkinter.CTkLabel(
+    frame, text="Date of birthday:")
+date_of_birthday_entry = customtkinter.CTkEntry(
+    frame, placeholder_text="Date of birthday")
+notes_label = customtkinter.CTkLabel(frame, text="Notes:")
+notes_entry = customtkinter.CTkEntry(frame, placeholder_text="Notes")
 
 # ALL_BUTTONS
 button_open = customtkinter.CTkButton(
@@ -158,6 +203,7 @@ button_exit = customtkinter.CTkButton(
 button_exit.place(x=40, y=200)
 theme_button = customtkinter.CTkButton(
     frame, text='Change theme', command=change_theme)
+enter_button = customtkinter.CTkButton(frame, text='Enter', command=save_data)
 back_to_main_from_settings = customtkinter.CTkButton(
     frame, text='Back', command=show_main_from_settings)
 back_to_main_from_create = customtkinter.CTkButton(
