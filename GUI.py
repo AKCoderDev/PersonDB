@@ -5,20 +5,25 @@ from tkinter import messagebox, filedialog
 # import ttkbootstrap as tb
 # import datetime
 
-
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
 
 root = customtkinter.CTk()
-
-
 root.title('PersonDB')
-root.geometry('800x500')
-root.eval('tk::PlaceWindow . center')
+#root.geometry('800x500')
+#root.eval('tk::PlaceWindow . center')
+window_width = 800
+window_height = 560
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+x = (screen_width - window_width) // 2
+y = (screen_height - window_height) // 2
+x+=80
+root.geometry(f"{window_width}x{window_height}+{x}+{y}")
+root.wm_minsize(window_width,window_height)
 
 frame = customtkinter.CTkFrame(root, width=300, height=150, corner_radius=10)
 frame.pack(pady=20, padx=20, fill='both', expand=True)
-
 
 def hide_main():
     button_open.place_forget()
@@ -26,7 +31,6 @@ def hide_main():
     button_settings.place_forget()
     button_show_about.place_forget()
     button_exit.place_forget()
-
 
 def show_main_from_create():
     button_open.place(x=40, y=40)
@@ -54,7 +58,6 @@ def show_main_from_create():
     back_to_main_from_create.place_forget()
     theme_button.place_forget()
 
-
 def show_main_from_settings():
     button_open.place(x=40, y=40)
     button_create.place(x=40, y=80)
@@ -64,10 +67,7 @@ def show_main_from_settings():
     back_to_main_from_settings.place_forget()
     theme_button.place_forget()
 
-
 # CREATE
-
-
 def save_data():
     passport = passport_entry.get()
     photo = photo_entry.get()
@@ -85,8 +85,6 @@ def save_data():
         return
 
 # creation of input fields
-
-
 def create():
     hide_main()
     passport_label.place(x=40, y=40)
@@ -109,16 +107,12 @@ def create():
     back_to_main_from_create.place(x=40, y=375)
 
 # SETTINGS
-
-
 def settings():
     hide_main()
     theme_button.place(x=40, y=40)
     back_to_main_from_settings.place(x=40, y=356)
 
-
 mode = 'dark'
-
 
 def change_theme():
     global mode
@@ -130,25 +124,23 @@ def change_theme():
         mode = 'dark'
 
 # ABOUT
-
-
 def show_about():
     window_about = customtkinter.CTkToplevel()
     window_about.title('About')
     window_about.geometry('300x200')
-    window_width = 300
+    window_width = 50
     window_height = 200
-    window_about.geometry(f"{window_width}x{window_height}")
     window_about.after(100, window_about.lift)
     screen_width = window_about.winfo_screenwidth()
     screen_height = window_about.winfo_screenheight()
     x = (screen_width - window_width) // 2
     y = (screen_height - window_height) // 2
-    window_about.geometry(f"+{x}+{y}")
+    x+=25
+    window_about.geometry(f"300x200+{x}+{y}")
     label = customtkinter.CTkLabel(
         window_about, wraplength=250, text='PersonDB\n'
         'Version 0.0.0.1\n'
-        'Developers: Antek\n'
+        'Developer: Antek\n'
         'Contact: example@example.com\n'
         'Website: example.com\n'
         'License: example License\n'
@@ -156,11 +148,8 @@ def show_about():
     label.pack(padx=0.5, pady=40)
 
 # EXIT
-
-
 def close_app():
     root.destroy()
-
 
 # Input fields
 passport_label = customtkinter.CTkLabel(frame, text="Passport ID:")
@@ -208,6 +197,5 @@ back_to_main_from_settings = customtkinter.CTkButton(
     frame, text='Back', command=show_main_from_settings)
 back_to_main_from_create = customtkinter.CTkButton(
     frame, text='Back', command=show_main_from_create)
-
 
 root.mainloop()

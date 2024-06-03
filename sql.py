@@ -24,19 +24,19 @@ class Person(Base):
         age = current_year - self.date_of_birth.year
         return age
 
-    def __init__(self, passport, photo, firstname, lastname, gender, phone_number, day_of_birthday, notes):
+    def __init__(self, passport, photo, firstname, lastname, gender, phone_number, date_of_birthday, notes):
         self.passport = passport
         self.photo = photo
         self.firstname = firstname
         self.lastname = lastname
         self.gender = gender
         self.phone_number = phone_number
-        self.date_of_birthday = day_of_birthday
+        self.date_of_birthday = date_of_birthday
         self.notes = notes
 
     def __repr__(self):
         age = self.calculate_age()
-        return f"({self.passport} {self.photo} {self.firstname} {self.lastname} {self.gender} {self.phone_number} {self.day_of_birthday} {self.notes})"
+        return f"({self.passport} {self.photo} {self.firstname} {self.lastname} {self.gender} {self.phone_number} {self.date_of_birthday} {self.notes})"
 
 
 engine = create_engine("sqlite:///C:/projects/PersonDB/Users.db", echo=True)
