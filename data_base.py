@@ -5,7 +5,6 @@ from datetime import datetime
 
 Base = declarative_base()
 
-
 class Person(Base):
     __tablename__ = "people"
 
@@ -38,14 +37,8 @@ class Person(Base):
         age = self.calculate_age()
         return f"({self.passport} {self.photo} {self.firstname} {self.lastname} {self.gender} {self.phone_number} {self.date_of_birthday} {self.notes})"
 
-
 engine = create_engine("sqlite:///C:/projects/PersonDB/Users.db", echo=True)
 Base.metadata.create_all(bind=engine)
 
 Session = sessionmaker(bind=engine)
 session = Session()
-
-#person = Person("AB1232", "C:\\Users\\path", "Alen", "Wolf", "M", "+375298068085",
-                #datetime(1986, 1, 1), "Był zauważen w okolicach")
-#session.add(person)
-session.commit()

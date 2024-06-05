@@ -1,8 +1,8 @@
 from tkinter import *
 import customtkinter
-import sql
+from data_base import Person,session
+from sqlalchemy.orm import sessionmaker
 from tkinter import messagebox, filedialog
-# import ttkbootstrap as tb
 # import datetime
 
 customtkinter.set_appearance_mode("dark")
@@ -83,6 +83,10 @@ def save_data():
         messagebox.showerror('Bład', 'Wszystkie pola muszą być wypełnione.')
         print("Zapisano użytkownika do bazy danych.")
         return
+    new_person = Person(passport, photo, firstname, lastname, gender, phone_number, date_of_birthday, notes)
+    session.add(new_person)
+    session.commit()
+    messagebox.showinfo("Success", "Person added successfully!")
 
 # creation of input fields
 def create():
