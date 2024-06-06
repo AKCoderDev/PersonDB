@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, ForeignKey, Column, String, CHAR, DateTime, Integer
+from sqlalchemy import create_engine, ForeignKey, Column, String, CHAR, Date, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
@@ -14,7 +14,7 @@ class Person(Base):
     name = Column("name", String)
     gender = Column("gender", CHAR)
     phone_number = Column("phone_number", String)
-    date_of_birthday = Column("Day of birthday", DateTime)
+    date_of_birthday = Column("Day of birthday", Date)
     notes = Column("Notes", String)
     age = Column("age", Integer)
 

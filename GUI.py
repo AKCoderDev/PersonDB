@@ -3,7 +3,7 @@ import customtkinter
 from data_base import Person,session
 from sqlalchemy.orm import sessionmaker
 from tkinter import messagebox, filedialog
-# import datetime
+from datetime import datetime
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
@@ -68,6 +68,15 @@ def show_main_from_settings():
     theme_button.place_forget()
 
 # CREATE
+def clear_fields():
+    passport_entry.delete(0,'end')
+    photo_entry.delete(0,'end')
+    firstname_entry.delete(0,'end')
+    lastname_entry.delete(0,'end')
+    gender_entry.delete(0,'end')
+    phone_number_entry.delete(0,'end')
+    date_of_birthday_entry.delete(0,'end')
+    notes_entry.delete(0,'end')
 def save_data():
     passport = passport_entry.get()
     photo = photo_entry.get()
@@ -75,19 +84,34 @@ def save_data():
     lastname = lastname_entry.get()
     gender = gender_entry.get()
     phone_number = phone_number_entry.get()
-    date_of_birthday = date_of_birthday_entry.get()
+    date_of_birthday_str = date_of_birthday_entry.get()
     notes = notes_entry.get()
-    print(f"Date of Birthday: {date_of_birthday}")
 
-    if not passport or not photo or not firstname or not lastname or not gender or not phone_number or not date_of_birthday:
-        messagebox.showerror('Bład', 'Wszystkie pola muszą być wypełnione.')
-        print("Zapisano użytkownika do bazy danych.")
+    if not passport or not photo or not firstname or not lastname or not gender or not phone_number or not date_of_birthday_str:
+        messagebox.showerror('Błąd', 'Wszystkie pola muszą być wypełnione.')
         return
-    new_person = Person(passport, photo, firstname, lastname, gender, phone_number, date_of_birthday, notes)
+
+    try:
+        date_of_birthday = datetime.strptime(date_of_birthday_str, '%d.%m.%Y').date()
+    except ValueError:
+        messagebox.showerror('Błąd', 'Nieprawidłowy format daty. Użyj formatu DD.MM.YYYY.')
+        return
+
+    new_person = Person(
+        passport=passport,
+        photo=photo,
+        firstname=firstname,
+        lastname=lastname,
+        gender=gender,
+        phone_number=phone_number,
+        date_of_birthday=date_of_birthday,
+        notes=notes,
+    )
+
     session.add(new_person)
     session.commit()
-    messagebox.showinfo("Success", "Person added successfully!")
-
+    messagebox.showinfo("Sukces", "Osoba została dodana pomyślnie!")
+    clear_fields()
 # creation of input fields
 def create():
     hide_main()
