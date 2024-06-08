@@ -106,7 +106,9 @@ def save_data():
         phone_number=phone_number,
         date_of_birthday=date_of_birthday,
         notes=notes,
+        
     )
+    new_person.age = new_person.calculate_age()
 
     session.add(new_person)
     session.commit()

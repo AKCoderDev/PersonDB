@@ -11,7 +11,7 @@ class Person(Base):
     passport = Column("Passport", String, primary_key=True)
     photo = Column("photo", String)
     firstname = Column("firstname", String)
-    name = Column("name", String)
+    lastname = Column("name", String)
     gender = Column("gender", CHAR)
     phone_number = Column("phone_number", String)
     date_of_birthday = Column("Day of birthday", Date)
@@ -20,7 +20,7 @@ class Person(Base):
 
     def calculate_age(self):
         current_year = datetime.now().year
-        age = current_year - self.date_of_birth.year
+        age = current_year - self.date_of_birthday.year
         return age
 
     def __init__(self, passport, photo, firstname, lastname, gender, phone_number, date_of_birthday, notes):
