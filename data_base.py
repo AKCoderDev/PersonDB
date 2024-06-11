@@ -11,7 +11,7 @@ class Person(Base):
     passport = Column("Passport", String, primary_key=True)
     photo = Column("photo", String)
     firstname = Column("firstname", String)
-    lastname = Column("name", String)
+    lastname = Column("lastname", String)
     gender = Column("gender", CHAR)
     phone_number = Column("phone_number", String)
     date_of_birthday = Column("Day of birthday", Date)

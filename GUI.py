@@ -78,14 +78,14 @@ def clear_fields():
     date_of_birthday_entry.delete(0,'end')
     notes_entry.delete(0,'end')
 def save_data():
-    passport = passport_entry.get()
+    passport = passport_entry.get().upper()
     photo = photo_entry.get()
-    firstname = firstname_entry.get()
-    lastname = lastname_entry.get()
-    gender = gender_entry.get()
+    firstname = firstname_entry.get().capitalize()
+    lastname = lastname_entry.get().capitalize()
+    gender = gender_entry.get().capitalize()
     phone_number = phone_number_entry.get()
     date_of_birthday_str = date_of_birthday_entry.get()
-    notes = notes_entry.get()
+    notes = notes_entry.get().capitalize()
 
     if not passport or not photo or not firstname or not lastname or not gender or not phone_number or not date_of_birthday_str:
         messagebox.showerror('Błąd', 'Wszystkie pola muszą być wypełnione.')
