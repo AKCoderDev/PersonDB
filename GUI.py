@@ -1,8 +1,9 @@
 from tkinter import *
+import tkinter as tk
 import customtkinter
 from data_base import Person,session
 from sqlalchemy.orm import sessionmaker
-from tkinter import messagebox, filedialog
+from tkinter import messagebox, filedialog, ttk
 from datetime import datetime
 
 customtkinter.set_appearance_mode("dark")
@@ -66,6 +67,34 @@ def show_main_from_settings():
     button_exit.place(x=40, y=200)
     back_to_main_from_settings.place_forget()
     theme_button.place_forget()
+
+#OPEN
+def setup_style():
+    style = ttk.Style()
+    style.configure("Treeview.Heading", font=("Helvetica", 12, "bold"), background="#f1f1f1", foreground="#333333")
+    style.configure("Treeview", font=("Helvetica", 10), rowheight=25)
+    style.map("Treeview", background=[("selected", "#347083")], foreground=[("selected", "white")])
+
+def read_base():
+    setup_style()
+    tree = ttk.Treeview(root, columns=('Passport', 'Firstname', 'Lastname', 'Age'), show='headings')
+
+    tree.heading('Passport', text='Passport')
+    tree.heading('Firstname', text='Firstname')
+    tree.heading('Lastname', text='Lastname')
+    tree.heading('Age', text='Age')
+
+    tree.column('Passport', anchor='center',width=100)
+    tree.column('Firstname',anchor='center',width=100)
+    tree.column('Lastname', anchor='center',width=100)
+    tree.column('Age',anchor='center',width=100)
+
+    tree.place(x=290, y= 100, width=645, height=200)
+
+    people = session.query(Person).all()
+    for person in people:
+        tree.insert('', tk.END, values=(person.passport, person.firstname, person.lastname, person.age))
+
 
 # CREATE
 def clear_fields():
@@ -206,7 +235,7 @@ notes_entry = customtkinter.CTkEntry(frame, placeholder_text="Notes")
 
 # ALL_BUTTONS
 button_open = customtkinter.CTkButton(
-    frame, text='Open', command=lambda: print('Działa'))
+    frame, text='Open', command=read_base)
 button_open.place(x=40, y=40)
 button_create = customtkinter.CTkButton(
     frame, text='Create', command=create)
