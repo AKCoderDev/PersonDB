@@ -76,7 +76,9 @@ def setup_style():
     style.map("Treeview", background=[("selected", "#347083")], foreground=[("selected", "white")])
 
 def read_base():
+    hide_main()
     setup_style()
+    back_to_main_from_open.place(x=40, y=470)
     tree = ttk.Treeview(root, columns=('Passport', 'Firstname', 'Lastname', 'Age'), show='headings')
 
     tree.heading('Passport', text='Passport')
@@ -89,12 +91,20 @@ def read_base():
     tree.column('Lastname', anchor='center',width=100)
     tree.column('Age',anchor='center',width=100)
 
-    tree.place(x=290, y= 100, width=645, height=200)
+    tree.place(x=90, y= 100, width=825, height=500)
 
     people = session.query(Person).all()
     for person in people:
         tree.insert('', tk.END, values=(person.passport, person.firstname, person.lastname, person.age))
 
+def show_main_from_open():
+    button_open.place(x=40, y=40)
+    button_create.place(x=40, y=80)
+    button_settings.place(x=40, y=120)
+    button_show_about.place(x=40, y=160)
+    button_exit.place(x=40, y=200)
+    back_to_main_from_open.place_forget()
+    tree.place_forget()
 
 # CREATE
 def clear_fields():
@@ -256,5 +266,7 @@ back_to_main_from_settings = customtkinter.CTkButton(
     frame, text='Back', command=show_main_from_settings)
 back_to_main_from_create = customtkinter.CTkButton(
     frame, text='Back', command=show_main_from_create)
+back_to_main_from_open = customtkinter.CTkButton(
+    frame, text='Back', command=show_main_from_open)
 
 root.mainloop()
