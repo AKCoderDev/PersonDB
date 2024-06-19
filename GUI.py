@@ -5,6 +5,7 @@ from data_base import Person,session
 from sqlalchemy.orm import sessionmaker
 from tkinter import messagebox, filedialog, ttk
 from datetime import datetime
+import re
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
@@ -78,24 +79,33 @@ def setup_style():
 def read_base():
     hide_main()
     setup_style()
+    global tree
     back_to_main_from_open.place(x=40, y=470)
-    tree = ttk.Treeview(root, columns=('Passport', 'Firstname', 'Lastname', 'Age'), show='headings')
+    tree = ttk.Treeview(root, columns=('Passport', 'Firstname', 'Lastname', 'Age','Gender','Phone number','Date of birthday','Notes'), show='headings')
 
     tree.heading('Passport', text='Passport')
     tree.heading('Firstname', text='Firstname')
     tree.heading('Lastname', text='Lastname')
     tree.heading('Age', text='Age')
+    tree.heading('Gender', text='Gender')
+    tree.heading('Phone number', text='Phone number')
+    tree.heading('Notes', text='Notes')
+    tree.heading('Date of birthday', text='Date of birthday')
 
-    tree.column('Passport', anchor='center',width=100)
-    tree.column('Firstname',anchor='center',width=100)
-    tree.column('Lastname', anchor='center',width=100)
-    tree.column('Age',anchor='center',width=100)
+    tree.column('Passport', anchor='center',width=90)
+    tree.column('Firstname',anchor='center',width=90)
+    tree.column('Lastname', anchor='center',width=90)
+    tree.column('Age',anchor='center',width=30)
+    tree.column('Gender',anchor='center',width=60)
+    tree.column('Phone number',anchor='center',width=100)
+    tree.column('Date of birthday',anchor='center',width=100)
+    tree.column('Notes',anchor='center',width=30)
 
     tree.place(x=90, y= 100, width=825, height=500)
 
     people = session.query(Person).all()
     for person in people:
-        tree.insert('', tk.END, values=(person.passport, person.firstname, person.lastname, person.age))
+        tree.insert('', tk.END, values=(person.passport, person.firstname, person.lastname, person.age, person.gender, person.phone_number, person.date_of_birthday,person.notes))
 
 def show_main_from_open():
     button_open.place(x=40, y=40)
@@ -116,6 +126,9 @@ def clear_fields():
     phone_number_entry.delete(0,'end')
     date_of_birthday_entry.delete(0,'end')
     notes_entry.delete(0,'end')
+def validate_phone_number(phone_number):
+        pattern = re.compile(r'^\+?[0-9]{10,11}$')
+        return pattern.match(phone_number) is not None
 def save_data():
     passport = passport_entry.get().upper()
     photo = photo_entry.get()
@@ -129,7 +142,9 @@ def save_data():
     if not passport or not photo or not firstname or not lastname or not gender or not phone_number or not date_of_birthday_str:
         messagebox.showerror('Błąd', 'Wszystkie pola muszą być wypełnione.')
         return
-
+    if not validate_phone_number(phone_number):
+        messagebox.showerror('Error', 'Phone number isnt correct')
+        return
     try:
         date_of_birthday = datetime.strptime(date_of_birthday_str, '%d.%m.%Y').date()
     except ValueError:
@@ -151,8 +166,9 @@ def save_data():
 
     session.add(new_person)
     session.commit()
-    messagebox.showinfo("Sukces", "Osoba została dodana pomyślnie!")
+    messagebox.showinfo("Sukces", "The person has been added successfully!")
     clear_fields()
+    
 # creation of input fields
 def create():
     hide_main()
