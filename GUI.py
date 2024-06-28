@@ -1,11 +1,13 @@
 from tkinter import *
 import tkinter as tk
 import customtkinter
+from customtkinter import CTk, CTkLabel
 from data_base import Person,session
 from sqlalchemy.orm import sessionmaker
 from tkinter import messagebox, filedialog, ttk
 from datetime import datetime
 import re
+from PIL import Image, ImageTk
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
@@ -101,11 +103,64 @@ def read_base():
     tree.column('Date of birthday',anchor='center',width=100)
     tree.column('Notes',anchor='center',width=30)
 
-    tree.place(x=90, y= 100, width=825, height=500)
+    tree.place(x=90, y= 60, width=825, height=500)
+
+    tree.bind('<Double-1>', open_details_windows)
 
     people = session.query(Person).all()
     for person in people:
         tree.insert('', tk.END, values=(person.passport, person.firstname, person.lastname, person.age, person.gender, person.phone_number, person.date_of_birthday,person.notes))
+
+
+
+def open_details_windows(event):
+    selected_item = tree.selection()[0]
+    values = tree.item(selected_item, 'values')
+
+    details_window = customtkinter.CTkToplevel()
+    details_window.title("Person Details")
+    window_width = 600
+    window_height = 400
+    details_window.after(100, details_window.lift)
+    screen_width = details_window.winfo_screenwidth()
+    screen_height = details_window.winfo_screenheight()
+    x = (screen_width - window_width) // 2
+    y = (screen_height - window_height) // 2
+    x+=25
+    details_window.geometry(f"600x400+{x}+{y}")
+
+
+    passport_label = CTkLabel(details_window, text=f"Passport: {values[0]}")
+    passport_label.pack()
+
+    firstname_label = CTkLabel(details_window, text=f"Firstname: {values[0]}")
+    firstname_label.pack()
+
+    lastname_label = CTkLabel(details_window, text=f"Lastname: {values[0]}")
+    lastname_label.pack()
+    
+    gender_label = CTkLabel(details_window, text=f"Gender: {values[0]}")
+    gender_label.pack()
+
+    phone_number_label = CTkLabel(details_window, text=f"Phone number: {values[0]}")
+    phone_number_label.pack()
+
+    date_of_birthday_label = CTkLabel(details_window, text=f"Date of birthday: {values[0]}")
+    date_of_birthday_label.pack()
+
+    notes_label = CTkLabel(details_window, text=f"Notes: {values[0]}")
+    notes_label.pack()
+
+    image_path = 'C:/projects/photos/1.jpg'
+    image = image.open(image_path)
+    image = image.resize((200,200)), Image.ANTIALIAS
+    photo = customtkinter.CtkImage(image)
+
+    photo_label = customtkinter.CTkLabel(details_window, image=photo)
+    photo_label.image = photo
+    photo_label.pack()
+
+
 
 def show_main_from_open():
     button_open.place(x=40, y=40)
@@ -160,8 +215,8 @@ def save_data():
         phone_number=phone_number,
         date_of_birthday=date_of_birthday,
         notes=notes,
-        
     )
+
     new_person.age = new_person.calculate_age()
 
     session.add(new_person)
