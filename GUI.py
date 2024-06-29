@@ -111,8 +111,6 @@ def read_base():
     for person in people:
         tree.insert('', tk.END, values=(person.passport, person.firstname, person.lastname, person.age, person.gender, person.phone_number, person.date_of_birthday,person.notes))
 
-
-
 def open_details_windows(event):
     selected_item = tree.selection()[0]
     values = tree.item(selected_item, 'values')
@@ -129,26 +127,28 @@ def open_details_windows(event):
     x+=25
     details_window.geometry(f"600x400+{x}+{y}")
 
-
     passport_label = CTkLabel(details_window, text=f"Passport: {values[0]}")
     passport_label.pack()
 
-    firstname_label = CTkLabel(details_window, text=f"Firstname: {values[0]}")
+    firstname_label = CTkLabel(details_window, text=f"Firstname: {values[1]}")
     firstname_label.pack()
 
-    lastname_label = CTkLabel(details_window, text=f"Lastname: {values[0]}")
+    lastname_label = CTkLabel(details_window, text=f"Lastname: {values[2]}")
     lastname_label.pack()
+
+    age_label = CTkLabel(details_window, text=f"Age: {values[3]}")
+    age_label.pack()
     
-    gender_label = CTkLabel(details_window, text=f"Gender: {values[0]}")
+    gender_label = CTkLabel(details_window, text=f"Gender: {values[4]}")
     gender_label.pack()
 
-    phone_number_label = CTkLabel(details_window, text=f"Phone number: {values[0]}")
+    phone_number_label = CTkLabel(details_window, text=f"Phone number: {values[5]}")
     phone_number_label.pack()
 
-    date_of_birthday_label = CTkLabel(details_window, text=f"Date of birthday: {values[0]}")
+    date_of_birthday_label = CTkLabel(details_window, text=f"Date of birthday: {values[6]}")
     date_of_birthday_label.pack()
 
-    notes_label = CTkLabel(details_window, text=f"Notes: {values[0]}")
+    notes_label = CTkLabel(details_window, text=f"Notes: {values[7]}")
     notes_label.pack()
 
     image_path = 'C:/projects/photos/1.jpg'
@@ -159,8 +159,6 @@ def open_details_windows(event):
     photo_label = customtkinter.CTkLabel(details_window, image=photo)
     photo_label.image = photo
     photo_label.pack()
-
-
 
 def show_main_from_open():
     button_open.place(x=40, y=40)
@@ -182,7 +180,7 @@ def clear_fields():
     date_of_birthday_entry.delete(0,'end')
     notes_entry.delete(0,'end')
 def validate_phone_number(phone_number):
-        pattern = re.compile(r'^\+?[0-9]{10,11}$')
+        pattern = re.compile(r'^\+?[0-9]{10,13}$')
         return pattern.match(phone_number) is not None
 def save_data():
     passport = passport_entry.get().upper()
@@ -195,15 +193,15 @@ def save_data():
     notes = notes_entry.get().capitalize()
 
     if not passport or not photo or not firstname or not lastname or not gender or not phone_number or not date_of_birthday_str:
-        messagebox.showerror('Błąd', 'Wszystkie pola muszą być wypełnione.')
+        messagebox.showerror('Error', 'All fields must be filled out')
         return
     if not validate_phone_number(phone_number):
-        messagebox.showerror('Error', 'Phone number isnt correct')
+        messagebox.showerror('Error', "Phone number isn't correct")
         return
     try:
         date_of_birthday = datetime.strptime(date_of_birthday_str, '%d.%m.%Y').date()
     except ValueError:
-        messagebox.showerror('Błąd', 'Nieprawidłowy format daty. Użyj formatu DD.MM.YYYY.')
+        messagebox.showerror('Error', 'Incorrect date format. Use format: DD.MM.YYYY.')
         return
 
     new_person = Person(
