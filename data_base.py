@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, ForeignKey, Column, String, CHAR, Date, Integer
+from sqlalchemy import create_engine, ForeignKey, Column, String, CHAR, Date, Integer, LargeBinary
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
@@ -9,7 +9,7 @@ class Person(Base):
     __tablename__ = "people"
 
     passport = Column("Passport", String, primary_key=True)
-    photo = Column("photo", String)
+    photo = Column("photo", LargeBinary)
     firstname = Column("firstname", String)
     lastname = Column("lastname", String)
     gender = Column("gender", CHAR)

@@ -8,6 +8,7 @@ from tkinter import messagebox, filedialog, ttk
 from datetime import datetime
 import re
 from PIL import Image, ImageTk
+import io
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
@@ -45,7 +46,7 @@ def show_main_from_create():
     passport_label.place_forget()
     passport_entry.place_forget()
     photo_label.place_forget()
-    photo_entry.place_forget()
+    upload_button.place_forget()
     firstname_label.place_forget()
     firstname_entry.place_forget()
     lastname_label.place_forget()
@@ -151,14 +152,7 @@ def open_details_windows(event):
     notes_label = CTkLabel(details_window, text=f"Notes: {values[7]}")
     notes_label.pack()
 
-    image_path = 'C:/projects/photos/1.jpg'
-    image = image.open(image_path)
-    image = image.resize((200,200)), Image.ANTIALIAS
-    photo = customtkinter.CtkImage(image)
-
-    photo_label = customtkinter.CTkLabel(details_window, image=photo)
-    photo_label.image = photo
-    photo_label.pack()
+    
 
 def show_main_from_open():
     button_open.place(x=40, y=40)
@@ -172,7 +166,7 @@ def show_main_from_open():
 # CREATE
 def clear_fields():
     passport_entry.delete(0,'end')
-    photo_entry.delete(0,'end')
+    upload_button.delete(0,'end')
     firstname_entry.delete(0,'end')
     lastname_entry.delete(0,'end')
     gender_entry.delete(0,'end')
@@ -182,9 +176,17 @@ def clear_fields():
 def validate_phone_number(phone_number):
         pattern = re.compile(r'^\+?[0-9]{10,13}$')
         return pattern.match(phone_number) is not None
+def upload_photo():
+    file_path = filedialog.askopenfilename()
+    if file_path:
+        with open(file_path, 'rb')as file:
+            global photo_data
+            photo_data = file.read()
+        photo_label.config(text="Photo upload")
+
 def save_data():
     passport = passport_entry.get().upper()
-    photo = photo_entry.get()
+    #photo = upload_button.get()
     firstname = firstname_entry.get().capitalize()
     lastname = lastname_entry.get().capitalize()
     gender = gender_entry.get().capitalize()
@@ -192,7 +194,7 @@ def save_data():
     date_of_birthday_str = date_of_birthday_entry.get()
     notes = notes_entry.get().capitalize()
 
-    if not passport or not photo or not firstname or not lastname or not gender or not phone_number or not date_of_birthday_str:
+    if not passport or not photo_data or not firstname or not lastname or not gender or not phone_number or not date_of_birthday_str:
         messagebox.showerror('Error', 'All fields must be filled out')
         return
     if not validate_phone_number(phone_number):
@@ -206,7 +208,7 @@ def save_data():
 
     new_person = Person(
         passport=passport,
-        photo=photo,
+        photo=photo_data,
         firstname=firstname,
         lastname=lastname,
         gender=gender,
@@ -228,7 +230,7 @@ def create():
     passport_label.place(x=40, y=40)
     passport_entry.place(x=141, y=40)
     photo_label.place(x=40, y=80)
-    photo_entry.place(x=141, y=80)
+    upload_button.place(x=141, y=100)
     firstname_label.place(x=40, y=120)
     firstname_entry.place(x=141, y=120)
     lastname_label.place(x=40, y=160)
@@ -294,7 +296,7 @@ passport_label = customtkinter.CTkLabel(frame, text="Passport ID:")
 passport_entry = customtkinter.CTkEntry(
     frame, placeholder_text="Passport ID")
 photo_label = customtkinter.CTkLabel(frame, text="Photo link:")
-photo_entry = customtkinter.CTkEntry(frame, placeholder_text="link")
+#upload_button = customtkinter.CTkEntry(frame, placeholder_text="link")
 firstname_label = customtkinter.CTkLabel(frame, text="Firstname:")
 firstname_entry = customtkinter.CTkEntry(
     frame, placeholder_text="firstname")
@@ -337,5 +339,7 @@ back_to_main_from_create = customtkinter.CTkButton(
     frame, text='Back', command=show_main_from_create)
 back_to_main_from_open = customtkinter.CTkButton(
     frame, text='Back', command=show_main_from_open)
+upload_button = customtkinter.CTkButton(root, text="Upload Photo", command=upload_photo)
+
 
 root.mainloop()
