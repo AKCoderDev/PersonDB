@@ -182,7 +182,15 @@ def upload_photo():
         with open(file_path, 'rb')as file:
             global photo_data
             photo_data = file.read()
-        photo_label.config(text="Photo upload")
+        #photo_label.configure(text="Photo upload")
+        upload_button.configure(text="Photo uploaded", state = DISABLED)
+        remove_button.place(x=320, y=100)
+
+def remove_photo():
+    global photo_data
+    photo_data = None
+    remove_button.forget()
+    upload_button.place(x=160, y=100)
 
 def save_data():
     passport = passport_entry.get().upper()
@@ -230,7 +238,7 @@ def create():
     passport_label.place(x=40, y=40)
     passport_entry.place(x=141, y=40)
     photo_label.place(x=40, y=80)
-    upload_button.place(x=141, y=100)
+    upload_button.place(x=160, y=100)
     firstname_label.place(x=40, y=120)
     firstname_entry.place(x=141, y=120)
     lastname_label.place(x=40, y=160)
@@ -295,7 +303,7 @@ def close_app():
 passport_label = customtkinter.CTkLabel(frame, text="Passport ID:")
 passport_entry = customtkinter.CTkEntry(
     frame, placeholder_text="Passport ID")
-photo_label = customtkinter.CTkLabel(frame, text="Photo link:")
+photo_label = customtkinter.CTkLabel(frame, text="Photo:")
 #upload_button = customtkinter.CTkEntry(frame, placeholder_text="link")
 firstname_label = customtkinter.CTkLabel(frame, text="Firstname:")
 firstname_entry = customtkinter.CTkEntry(
@@ -340,6 +348,6 @@ back_to_main_from_create = customtkinter.CTkButton(
 back_to_main_from_open = customtkinter.CTkButton(
     frame, text='Back', command=show_main_from_open)
 upload_button = customtkinter.CTkButton(root, text="Upload Photo", command=upload_photo)
-
+remove_button = customtkinter.CTkButton(root, text="Delete", command=remove_photo)
 
 root.mainloop()
