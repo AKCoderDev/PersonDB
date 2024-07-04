@@ -62,6 +62,12 @@ def show_main_from_create():
     enter_button.place_forget()
     back_to_main_from_create.place_forget()
     theme_button.place_forget()
+    remove_button.place_forget()
+    upload_button.place_forget()
+    remove_photo(create_upload_button=False)
+    clear_fields()
+    
+
 
 def show_main_from_settings():
     button_open.place(x=40, y=40)
@@ -164,9 +170,10 @@ def show_main_from_open():
     tree.place_forget()
 
 # CREATE
+photo_data = None
 def clear_fields():
     passport_entry.delete(0,'end')
-    upload_button.delete(0,'end')
+    upload_button.configure(text="Upload Photo", state=tk.NORMAL)
     firstname_entry.delete(0,'end')
     lastname_entry.delete(0,'end')
     gender_entry.delete(0,'end')
@@ -186,11 +193,12 @@ def upload_photo():
         upload_button.configure(text="Photo uploaded", state = DISABLED)
         remove_button.place(x=320, y=100)
 
-def remove_photo():
+def remove_photo(create_upload_button=True):
     global photo_data
     photo_data = None
     remove_button.forget()
-    upload_button.place(x=160, y=100)
+    if create_upload_button:
+        upload_button.place(x=160, y=100)
 
 def save_data():
     passport = passport_entry.get().upper()
@@ -202,7 +210,7 @@ def save_data():
     date_of_birthday_str = date_of_birthday_entry.get()
     notes = notes_entry.get().capitalize()
 
-    if not passport or not photo_data or not firstname or not lastname or not gender or not phone_number or not date_of_birthday_str:
+    if not passport  or not firstname or not lastname or not gender or not phone_number or not date_of_birthday_str:
         messagebox.showerror('Error', 'All fields must be filled out')
         return
     if not validate_phone_number(phone_number):
@@ -304,7 +312,6 @@ passport_label = customtkinter.CTkLabel(frame, text="Passport ID:")
 passport_entry = customtkinter.CTkEntry(
     frame, placeholder_text="Passport ID")
 photo_label = customtkinter.CTkLabel(frame, text="Photo:")
-#upload_button = customtkinter.CTkEntry(frame, placeholder_text="link")
 firstname_label = customtkinter.CTkLabel(frame, text="Firstname:")
 firstname_entry = customtkinter.CTkEntry(
     frame, placeholder_text="firstname")
