@@ -119,7 +119,7 @@ def read_base():
         tree.insert('', tk.END, values=(person.passport, person.firstname, person.lastname, person.age, person.gender, person.phone_number, person.date_of_birthday,person.notes))
 
 def open_details_windows(event):
-    selected_item = tree.selection()[0]
+    selected_item = tree.selection()
     values = tree.item(selected_item, 'values')
 
     details_window = customtkinter.CTkToplevel()
@@ -135,30 +135,50 @@ def open_details_windows(event):
     details_window.geometry(f"600x400+{x}+{y}")
 
     passport_label = CTkLabel(details_window, text=f"Passport: {values[0]}")
-    passport_label.pack()
+    passport_label.pack(pady=2)
 
     firstname_label = CTkLabel(details_window, text=f"Firstname: {values[1]}")
-    firstname_label.pack()
+    firstname_label.pack(pady=2)
 
     lastname_label = CTkLabel(details_window, text=f"Lastname: {values[2]}")
-    lastname_label.pack()
+    lastname_label.pack(pady=2)
 
     age_label = CTkLabel(details_window, text=f"Age: {values[3]}")
-    age_label.pack()
+    age_label.pack(pady=2)
     
     gender_label = CTkLabel(details_window, text=f"Gender: {values[4]}")
-    gender_label.pack()
+    gender_label.pack(pady=2)
 
     phone_number_label = CTkLabel(details_window, text=f"Phone number: {values[5]}")
-    phone_number_label.pack()
+    phone_number_label.pack(pady=2)
 
     date_of_birthday_label = CTkLabel(details_window, text=f"Date of birthday: {values[6]}")
-    date_of_birthday_label.pack()
+    date_of_birthday_label.pack(pady=2)
 
     notes_label = CTkLabel(details_window, text=f"Notes: {values[7]}")
-    notes_label.pack()
+    notes_label.pack(pady=2)
+    display_photo()
 
-    
+#Photo
+photo_data = None
+def upload_photo():
+    file_path = filedialog.askopenfilename()
+    if file_path:
+        with open(file_path, 'rb')as file:
+            global photo_data
+            photo_data = file.read()
+        #photo_label.configure(text="Photo upload")
+        upload_button.configure(text="Photo uploaded", state = DISABLED)
+        remove_button.place(x=320, y=100)
+
+def display_photo(photo_data):
+    image = Image.open(io.BytesIO(photo_data))
+    image = image.resize((200,200), Image.ANTIALIAS)
+    photo_image = ImageTk.PhotoImage(image)
+    photo_label.configure(image=photo_image)
+    photo_label.image= photo_image
+    photo_label.pack(pady=10)
+
 
 def show_main_from_open():
     button_open.place(x=40, y=40)
@@ -170,7 +190,7 @@ def show_main_from_open():
     tree.place_forget()
 
 # CREATE
-photo_data = None
+
 def clear_fields():
     passport_entry.delete(0,'end')
     upload_button.configure(text="Upload Photo", state=tk.NORMAL)
@@ -183,15 +203,7 @@ def clear_fields():
 def validate_phone_number(phone_number):
         pattern = re.compile(r'^\+?[0-9]{10,13}$')
         return pattern.match(phone_number) is not None
-def upload_photo():
-    file_path = filedialog.askopenfilename()
-    if file_path:
-        with open(file_path, 'rb')as file:
-            global photo_data
-            photo_data = file.read()
-        #photo_label.configure(text="Photo upload")
-        upload_button.configure(text="Photo uploaded", state = DISABLED)
-        remove_button.place(x=320, y=100)
+
 
 def remove_photo(create_upload_button=True):
     global photo_data
