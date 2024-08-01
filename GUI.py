@@ -157,13 +157,15 @@ def open_details_windows(event):
 
     notes_label = CTkLabel(details_window, text=f"Notes: {values[7]}")
     notes_label.pack(pady=2)
-    display_photo()
+    
+    display_photo(photo_data)
 
 #Photo
 photo_data = None
 def upload_photo():
-    file_path = filedialog.askopenfilename()
+    file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg;*.jpeg;*.bmp;*.png")])
     if file_path:
+        print(f"Selected file: {file_path}")
         with open(file_path, 'rb')as file:
             global photo_data
             photo_data = file.read()
@@ -172,13 +174,18 @@ def upload_photo():
         remove_button.place(x=320, y=100)
 
 def display_photo(photo_data):
-    image = Image.open(io.BytesIO(photo_data))
-    image = image.resize((200,200), Image.ANTIALIAS)
-    photo_image = ImageTk.PhotoImage(image)
-    photo_label.configure(image=photo_image)
-    photo_label.image= photo_image
-    photo_label.pack(pady=10)
-
+    if photo_data:
+        try:
+            image = Image.open(io.BytesIO(photo_data))
+            image = image.resize((200,200), Image.ANTIALIAS)
+            photo_image = ImageTk.PhotoImage(image)
+            photo_label.configure(image=photo_image)
+            photo_label.image= photo_image
+            photo_label.pack(pady=10)
+        except Exception as e:
+            print(f"Error displaying photo: {e}")
+    else:
+        print("No photo data available")
 
 def show_main_from_open():
     button_open.place(x=40, y=40)
@@ -208,8 +215,9 @@ def validate_phone_number(phone_number):
 def remove_photo(create_upload_button=True):
     global photo_data
     photo_data = None
-    remove_button.forget()
     if create_upload_button:
+        upload_button.configure(state = "normal")
+        remove_button.place_forget()
         upload_button.place(x=160, y=100)
 
 def save_data():
