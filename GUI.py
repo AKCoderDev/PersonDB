@@ -47,16 +47,16 @@ def show_main_from_create():
     passport_entry.place_forget()
     photo_label.place_forget()
     upload_button.place_forget()
-    firstname_label.place_forget()
-    firstname_entry.place_forget()
-    lastname_label.place_forget()
-    lastname_entry.place_forget()
+    first_name_label.place_forget()
+    first_name_entry.place_forget()
+    last_name_label.place_forget()
+    last_name_entry.place_forget()
     gender_label.place_forget()
     gender_entry.place_forget()
     phone_number_label.place_forget()
     phone_number_entry.place_forget()
-    date_of_birthday_label.place_forget()
-    date_of_birthday_entry.place_forget()
+    date_of_birth_label.place_forget()
+    date_of_birth_entry.place_forget()
     notes_label.place_forget()
     notes_entry.place_forget()
     enter_button.place_forget()
@@ -90,24 +90,24 @@ def read_base():
     setup_style()
     global tree
     back_to_main_from_open.place(x=40, y=470)
-    tree = ttk.Treeview(root, columns=('Passport', 'Firstname', 'Lastname', 'Age','Gender','Phone number','Date of birthday','Notes'), show='headings')
+    tree = ttk.Treeview(root, columns=('Passport', 'first_name', 'last_name', 'Age','Gender','Phone number','Date of birth','Notes'), show='headings')
 
     tree.heading('Passport', text='Passport')
-    tree.heading('Firstname', text='Firstname')
-    tree.heading('Lastname', text='Lastname')
+    tree.heading('first_name', text='First name')
+    tree.heading('last_name', text='Last name')
     tree.heading('Age', text='Age')
     tree.heading('Gender', text='Gender')
     tree.heading('Phone number', text='Phone number')
     tree.heading('Notes', text='Notes')
-    tree.heading('Date of birthday', text='Date of birthday')
+    tree.heading('Date of birth', text='Date of birth')
 
     tree.column('Passport', anchor='center',width=90)
-    tree.column('Firstname',anchor='center',width=90)
-    tree.column('Lastname', anchor='center',width=90)
+    tree.column('first_name',anchor='center',width=90)
+    tree.column('last_name', anchor='center',width=90)
     tree.column('Age',anchor='center',width=30)
     tree.column('Gender',anchor='center',width=60)
     tree.column('Phone number',anchor='center',width=100)
-    tree.column('Date of birthday',anchor='center',width=100)
+    tree.column('Date of birth',anchor='center',width=100)
     tree.column('Notes',anchor='center',width=30)
 
     tree.place(x=90, y= 60, width=825, height=500)
@@ -116,7 +116,7 @@ def read_base():
 
     people = session.query(Person).all()
     for person in people:
-        tree.insert('', tk.END, values=(person.passport, person.firstname, person.lastname, person.age, person.gender, person.phone_number, person.date_of_birthday,person.notes))
+        tree.insert('', tk.END, values=(person.passport, person.first_name, person.last_name, person.age, person.gender, person.phone_number, person.date_of_birth,person.notes))
 
 def open_details_windows(event):
     selected_item = tree.selection()
@@ -137,11 +137,11 @@ def open_details_windows(event):
     passport_label = CTkLabel(details_window, text=f"Passport: {values[0]}")
     passport_label.pack(pady=2)
 
-    firstname_label = CTkLabel(details_window, text=f"Firstname: {values[1]}")
-    firstname_label.pack(pady=2)
+    first_name_label = CTkLabel(details_window, text=f"first_name: {values[1]}")
+    first_name_label.pack(pady=2)
 
-    lastname_label = CTkLabel(details_window, text=f"Lastname: {values[2]}")
-    lastname_label.pack(pady=2)
+    last_name_label = CTkLabel(details_window, text=f"last_name: {values[2]}")
+    last_name_label.pack(pady=2)
 
     age_label = CTkLabel(details_window, text=f"Age: {values[3]}")
     age_label.pack(pady=2)
@@ -152,8 +152,8 @@ def open_details_windows(event):
     phone_number_label = CTkLabel(details_window, text=f"Phone number: {values[5]}")
     phone_number_label.pack(pady=2)
 
-    date_of_birthday_label = CTkLabel(details_window, text=f"Date of birthday: {values[6]}")
-    date_of_birthday_label.pack(pady=2)
+    date_of_birth_label = CTkLabel(details_window, text=f"Date of birth: {values[6]}")
+    date_of_birth_label.pack(pady=2)
 
     notes_label = CTkLabel(details_window, text=f"Notes: {values[7]}")
     notes_label.pack(pady=2)
@@ -201,11 +201,11 @@ def show_main_from_open():
 def clear_fields():
     passport_entry.delete(0,'end')
     upload_button.configure(text="Upload Photo", state=tk.NORMAL)
-    firstname_entry.delete(0,'end')
-    lastname_entry.delete(0,'end')
+    first_name_entry.delete(0,'end')
+    last_name_entry.delete(0,'end')
     gender_entry.delete(0,'end')
     phone_number_entry.delete(0,'end')
-    date_of_birthday_entry.delete(0,'end')
+    date_of_birth_entry.delete(0,'end')
     notes_entry.delete(0,'end')
 def validate_phone_number(phone_number):
         pattern = re.compile(r'^\+?[0-9]{10,13}$')
@@ -223,21 +223,21 @@ def remove_photo(create_upload_button=True):
 def save_data():
     passport = passport_entry.get().upper()
     #photo = upload_button.get()
-    firstname = firstname_entry.get().capitalize()
-    lastname = lastname_entry.get().capitalize()
+    first_name = first_name_entry.get().capitalize()
+    last_name = last_name_entry.get().capitalize()
     gender = gender_entry.get().capitalize()
     phone_number = phone_number_entry.get()
-    date_of_birthday_str = date_of_birthday_entry.get()
+    date_of_birth_str = date_of_birth_entry.get()
     notes = notes_entry.get().capitalize()
 
-    if not passport  or not firstname or not lastname or not gender or not phone_number or not date_of_birthday_str:
+    if not passport  or not first_name or not last_name or not gender or not phone_number or not date_of_birth_str:
         messagebox.showerror('Error', 'All fields must be filled out')
         return
     if not validate_phone_number(phone_number):
         messagebox.showerror('Error', "Phone number isn't correct")
         return
     try:
-        date_of_birthday = datetime.strptime(date_of_birthday_str, '%d.%m.%Y').date()
+        date_of_birth = datetime.strptime(date_of_birth_str, '%d.%m.%Y').date()
     except ValueError:
         messagebox.showerror('Error', 'Incorrect date format. Use format: DD.MM.YYYY.')
         return
@@ -245,11 +245,11 @@ def save_data():
     new_person = Person(
         passport=passport,
         photo=photo_data,
-        firstname=firstname,
-        lastname=lastname,
+        first_name=first_name,
+        last_name=last_name,
         gender=gender,
         phone_number=phone_number,
-        date_of_birthday=date_of_birthday,
+        date_of_birth=date_of_birth,
         notes=notes,
     )
 
@@ -257,7 +257,7 @@ def save_data():
 
     session.add(new_person)
     session.commit()
-    messagebox.showinfo("Sukces", "The person has been added successfully!")
+    messagebox.showinfo("Success", "The person has been added successfully!")
     clear_fields()
     
 # creation of input fields
@@ -267,16 +267,16 @@ def create():
     passport_entry.place(x=141, y=40)
     photo_label.place(x=40, y=80)
     upload_button.place(x=160, y=100)
-    firstname_label.place(x=40, y=120)
-    firstname_entry.place(x=141, y=120)
-    lastname_label.place(x=40, y=160)
-    lastname_entry.place(x=141, y=160)
+    first_name_label.place(x=40, y=120)
+    first_name_entry.place(x=141, y=120)
+    last_name_label.place(x=40, y=160)
+    last_name_entry.place(x=141, y=160)
     gender_label.place(x=40, y=200)
     gender_entry .place(x=141, y=200)
     phone_number_label.place(x=40, y=240)
     phone_number_entry.place(x=141, y=240)
-    date_of_birthday_label.place(x=40, y=280)
-    date_of_birthday_entry.place(x=141, y=280)
+    date_of_birth_label.place(x=40, y=280)
+    date_of_birth_entry.place(x=141, y=280)
     notes_label.place(x=40, y=320)
     notes_entry.place(x=141, y=320)
     enter_button.place(x=210, y=375)
@@ -332,20 +332,20 @@ passport_label = customtkinter.CTkLabel(frame, text="Passport ID:")
 passport_entry = customtkinter.CTkEntry(
     frame, placeholder_text="Passport ID")
 photo_label = customtkinter.CTkLabel(frame, text="Photo:")
-firstname_label = customtkinter.CTkLabel(frame, text="Firstname:")
-firstname_entry = customtkinter.CTkEntry(
-    frame, placeholder_text="firstname")
-lastname_label = customtkinter.CTkLabel(frame, text="Lastname:")
-lastname_entry = customtkinter.CTkEntry(frame, placeholder_text="lastname")
+first_name_label = customtkinter.CTkLabel(frame, text="First name:")
+first_name_entry = customtkinter.CTkEntry(
+    frame, placeholder_text="First name")
+last_name_label = customtkinter.CTkLabel(frame, text="Last name:")
+last_name_entry = customtkinter.CTkEntry(frame, placeholder_text="Last name")
 gender_label = customtkinter.CTkLabel(frame, text="Gender:")
-gender_entry = customtkinter.CTkEntry(frame, placeholder_text="gender")
+gender_entry = customtkinter.CTkEntry(frame, placeholder_text="Gender")
 phone_number_label = customtkinter.CTkLabel(frame, text="Phone number:")
 phone_number_entry = customtkinter.CTkEntry(
-    frame, placeholder_text="phone number")
-date_of_birthday_label = customtkinter.CTkLabel(
-    frame, text="Date of birthday:")
-date_of_birthday_entry = customtkinter.CTkEntry(
-    frame, placeholder_text="Date of birthday")
+    frame, placeholder_text="Phone number")
+date_of_birth_label = customtkinter.CTkLabel(
+    frame, text="Date of birth:")
+date_of_birth_entry = customtkinter.CTkEntry(
+    frame, placeholder_text="Date of birth")
 notes_label = customtkinter.CTkLabel(frame, text="Notes:")
 notes_entry = customtkinter.CTkEntry(frame, placeholder_text="Notes")
 
