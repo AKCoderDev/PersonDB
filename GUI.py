@@ -211,6 +211,14 @@ def validate_phone_number(phone_number):
         pattern = re.compile(r'^\+?[0-9]{10,13}$')
         return pattern.match(phone_number) is not None
 
+def validate_gender(gender):
+    if (re.search(r"F",gender) or
+        re.search(r"M",gender) or
+        re.search(r"Female",gender) or
+        re.search(r"Male",gender)):
+        return True
+    return False
+
 
 def remove_photo(create_upload_button=True):
     global photo_data
@@ -235,6 +243,9 @@ def save_data():
         return
     if not validate_phone_number(phone_number):
         messagebox.showerror('Error', "Phone number isn't correct")
+        return
+    if not validate_gender(gender):
+        messagebox.showerror('Error','Gender is not correct')
         return
     try:
         date_of_birth = datetime.strptime(date_of_birth_str, '%d.%m.%Y').date()
