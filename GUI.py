@@ -1,7 +1,8 @@
 from tkinter import *
 import tkinter as tk
 import customtkinter
-from customtkinter import CTk, CTkLabel
+from customtkinter import CTkImage, CTkLabel
+import customtkinter as CTk
 from data_base import Person,session
 from sqlalchemy.orm import sessionmaker
 from tkinter import messagebox, filedialog, ttk
@@ -158,29 +159,32 @@ def open_details_windows(event):
     notes_label = CTkLabel(details_window, text=f"Notes: {values[7]}")
     notes_label.pack(pady=2)
     
-    display_photo(photo_data)
+    global photo_label
+    photo_label = CTkLabel(details_window)
+    photo_label.pack(pady=10)
+    display_photo(photo_data, photo_label)
 
 #Photo
 photo_data = None
 def upload_photo():
+    global photo_data
     file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg;*.jpeg;*.bmp;*.png")])
     if file_path:
         print(f"Selected file: {file_path}")
         with open(file_path, 'rb')as file:
-            global photo_data
             photo_data = file.read()
-        #photo_label.configure(text="Photo upload")
+        display_photo(photo_data, photo_label)
         upload_button.configure(text="Photo uploaded", state = DISABLED)
         remove_button.place(x=320, y=100)
 
-def display_photo(photo_data):
+def display_photo(photo_data, photo_label):
     if photo_data:
         try:
             image = Image.open(io.BytesIO(photo_data))
-            image = image.resize((200,200), Image.ANTIALIAS)
-            photo_image = ImageTk.PhotoImage(image)
+            image = image.resize((200,200), Image.LANCZOS)
+            photo_image = CTkImage(image)
             photo_label.configure(image=photo_image)
-            photo_label.image= photo_image
+            photo_label.image = photo_image
             photo_label.pack(pady=10)
         except Exception as e:
             print(f"Error displaying photo: {e}")
@@ -197,7 +201,6 @@ def show_main_from_open():
     tree.place_forget()
 
 # CREATE
-
 def clear_fields():
     passport_entry.delete(0,'end')
     upload_button.configure(text="Upload Photo", state=tk.NORMAL)
