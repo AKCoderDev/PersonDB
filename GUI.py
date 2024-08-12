@@ -10,6 +10,7 @@ from datetime import datetime
 import re
 from PIL import Image, ImageTk
 import io
+from customtkinter import CTkLabel, CTkFont
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
@@ -120,6 +121,7 @@ def read_base():
         tree.insert('', tk.END, values=(person.passport, person.first_name, person.last_name, person.age, person.gender, person.phone_number, person.date_of_birth,person.notes))
 
 def open_details_windows(event):
+    
     selected_item = tree.selection()
     values = tree.item(selected_item, 'values')
 
@@ -134,36 +136,35 @@ def open_details_windows(event):
     y = (screen_height - window_height) // 2
     x+=25
     details_window.geometry(f"600x400+{x}+{y}")
-
-    passport_label = CTkLabel(details_window, text=f"Passport: {values[0]}")
-    passport_label.pack(pady=2)
-
-    first_name_label = CTkLabel(details_window, text=f"first_name: {values[1]}")
-    first_name_label.pack(pady=2)
-
-    last_name_label = CTkLabel(details_window, text=f"last_name: {values[2]}")
-    last_name_label.pack(pady=2)
-
-    age_label = CTkLabel(details_window, text=f"Age: {values[3]}")
-    age_label.pack(pady=2)
     
-    gender_label = CTkLabel(details_window, text=f"Gender: {values[4]}")
-    gender_label.pack(pady=2)
+    font = CTkFont(size=20)
 
-    phone_number_label = CTkLabel(details_window, text=f"Phone number: {values[5]}")
-    phone_number_label.pack(pady=2)
-
-    date_of_birth_label = CTkLabel(details_window, text=f"Date of birth: {values[6]}")
-    date_of_birth_label.pack(pady=2)
-
-    notes_label = CTkLabel(details_window, text=f"Notes: {values[7]}")
-    notes_label.pack(pady=2)
+    passport_label = CTkLabel(details_window, text=f"Passport: {values[0]}", font=font)
+    passport_label.place(x = 30, y = 20)
     
-    global photo_label
-    photo_label = CTkLabel(details_window)
-    photo_label.pack(pady=10)
+    first_name_label = CTkLabel(details_window, text=f"First name: {values[1]}", font=font)
+    first_name_label.place(x = 30, y = 50)
+
+    last_name_label = CTkLabel(details_window, text=f"Last name: {values[2]}", font=font)
+    last_name_label.place(x = 30, y = 80)
+
+    age_label = CTkLabel(details_window, text=f"Age: {values[3]}", font=font)
+    age_label.place(x = 30, y = 110)
+    
+    gender_label = CTkLabel(details_window, text=f"Gender: {values[4]}", font=font)
+    gender_label.place(x = 30, y = 140)
+
+    phone_number_label = CTkLabel(details_window, text=f"Phone number: {values[5]}", font=font)
+    phone_number_label.place(x = 30, y = 170)
+
+    date_of_birth_label = CTkLabel(details_window, text=f"Date of birth: {values[6]}", font=font)
+    date_of_birth_label.place(x = 30, y = 200)
+
+    notes_label = CTkLabel(details_window, text=f"Notes: {values[7]}", font=font)
+    notes_label.place(x = 30, y = 230)
+    
+    
     display_photo(photo_data, photo_label)
-
 #Photo
 photo_data = None
 def upload_photo():
