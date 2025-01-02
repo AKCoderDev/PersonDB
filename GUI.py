@@ -164,7 +164,6 @@ def open_details_windows(event):
     notes_label.place(x = 30, y = 230)
     
     
-    display_photo(photo_data, photo_label)
 #Photo
 photo_data = None
 def upload_photo():
@@ -174,23 +173,11 @@ def upload_photo():
         print(f"Selected file: {file_path}")
         with open(file_path, 'rb')as file:
             photo_data = file.read()
-        display_photo(photo_data, photo_label)
         upload_button.configure(text="Photo uploaded", state = DISABLED)
         remove_button.place(x=320, y=100)
 
-def display_photo(photo_data, photo_label):
-    if photo_data:
-        try:
-            image = Image.open(io.BytesIO(photo_data))
-            image = image.resize((200,200), Image.LANCZOS)
-            photo_image = CTkImage(image)
-            photo_label.configure(image=photo_image)
-            photo_label.image = photo_image
-            photo_label.pack(pady=10)
-        except Exception as e:
-            print(f"Error displaying photo: {e}")
-    else:
-        print("No photo data available")
+
+
 
 def show_main_from_open():
     button_open.place(x=40, y=40)
@@ -227,6 +214,8 @@ def validate_gender(gender):
 def remove_photo(create_upload_button=True):
     global photo_data
     photo_data = None
+    photo_label.configure(image=None)
+    photo_label.image = None
     if create_upload_button:
         upload_button.configure(state = "normal")
         remove_button.place_forget()
@@ -273,6 +262,7 @@ def save_data():
     session.add(new_person)
     session.commit()
     messagebox.showinfo("Success", "The person has been added successfully!")
+    remove_button.forget()
     clear_fields()
     
 # creation of input fields
@@ -330,7 +320,7 @@ def show_about():
     window_about.geometry(f"300x200+{x}+{y}")
     label = customtkinter.CTkLabel(
         window_about, wraplength=250, text='PersonDB\n'
-        'Version 0.0.0.1\n'
+        'Version 0.3\n'
         'Developer: Antek\n'
         'Contact: example@example.com\n'
         'Website: example.com\n'
