@@ -162,8 +162,30 @@ def open_details_windows(event):
 
     notes_label = CTkLabel(details_window, text=f"Notes: {values[7]}", font=font)
     notes_label.place(x = 30, y = 230)
-    
-    
+    person = session.query(Person).filter_by(passport=values[0]).first()
+    print(f"Type of person.photo: {type(person.photo)}")
+
+    if Person:  # Sprawdzenie, czy osoba istnieje w bazie
+        if Person.photo:  # Sprawdzenie, czy istnieje zdjęcie
+            print(f"Photo data length: {len(person.photo)} bytes")
+            try:
+                # Konwersja danych binarnych na obraz
+                image = Image.open(io.BytesIO(person.photo))
+                image = image.resize((150, 150))  # Zmiana rozmiaru obrazu
+                photo_image = ImageTk.PhotoImage(image)
+
+                # Wyświetlenie obrazu w etykiecie
+                photo_label = CTkLabel(details_window, image=photo_image, text = " ")
+                photo_label.image = photo_image  # Zachowanie referencji do obrazu
+                photo_label.place(x=320, y=25)
+            except Exception as e:
+                print(f"Error displaying photo: {e}")
+        else:
+            print("No photo available for this person.")
+    else:
+        print("Person not found in the database.")
+
+
 #Photo
 photo_data = None
 def upload_photo():
@@ -262,7 +284,7 @@ def save_data():
     session.add(new_person)
     session.commit()
     messagebox.showinfo("Success", "The person has been added successfully!")
-    remove_button.forget()
+    remove_button.place_forget()
     clear_fields()
     
 # creation of input fields
