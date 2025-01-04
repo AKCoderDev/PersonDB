@@ -160,24 +160,24 @@ def open_details_windows(event):
     date_of_birth_label = CTkLabel(details_window, text=f"Date of birth: {values[6]}", font=font)
     date_of_birth_label.place(x = 30, y = 200)
 
-    notes_label = CTkLabel(details_window, text=f"Notes: {values[7]}", font=font)
+    notes_label = CTkLabel(details_window, text=f"Notes: {values[7]}", font=font, wraplength=500,justify="left")
     notes_label.place(x = 30, y = 230)
+
     person = session.query(Person).filter_by(passport=values[0]).first()
     print(f"Type of person.photo: {type(person.photo)}")
 
-    if Person:  # Sprawdzenie, czy osoba istnieje w bazie
-        if Person.photo:  # Sprawdzenie, czy istnieje zdjęcie
+    if Person:  #Check in base
+        if Person.photo:  #Check picture
             print(f"Photo data length: {len(person.photo)} bytes")
             try:
-                # Konwersja danych binarnych na obraz
                 image = Image.open(io.BytesIO(person.photo))
-                image = image.resize((150, 150))  # Zmiana rozmiaru obrazu
+                image = image.resize((150, 150))
                 photo_image = ImageTk.PhotoImage(image)
 
-                # Wyświetlenie obrazu w etykiecie
+                #image display
                 photo_label = CTkLabel(details_window, image=photo_image, text = " ")
-                photo_label.image = photo_image  # Zachowanie referencji do obrazu
-                photo_label.place(x=320, y=25)
+                photo_label.image = photo_image
+                photo_label.place(x=390, y=20)
             except Exception as e:
                 print(f"Error displaying photo: {e}")
         else:
