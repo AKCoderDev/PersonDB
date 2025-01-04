@@ -17,8 +17,6 @@ customtkinter.set_default_color_theme("dark-blue")
 
 root = customtkinter.CTk()
 root.title('PersonDB')
-#root.geometry('800x500')
-#root.eval('tk::PlaceWindow . center')
 window_width = 800
 window_height = 560
 screen_width = root.winfo_screenwidth()
@@ -69,8 +67,6 @@ def show_main_from_create():
     remove_photo(create_upload_button=False)
     clear_fields()
     
-
-
 def show_main_from_settings():
     button_open.place(x=40, y=40)
     button_create.place(x=40, y=80)
@@ -185,7 +181,6 @@ def open_details_windows(event):
     else:
         print("Person not found in the database.")
 
-
 #Photo
 photo_data = None
 def upload_photo():
@@ -197,9 +192,6 @@ def upload_photo():
             photo_data = file.read()
         upload_button.configure(text="Photo uploaded", state = DISABLED)
         remove_button.place(x=320, y=100)
-
-
-
 
 def show_main_from_open():
     button_open.place(x=40, y=40)
@@ -231,7 +223,6 @@ def validate_gender(gender):
         re.search(r"Male",gender)):
         return True
     return False
-
 
 def remove_photo(create_upload_button=True):
     global photo_data
