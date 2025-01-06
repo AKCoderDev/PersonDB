@@ -116,11 +116,11 @@ def read_base():
 
     tree.bind('<Double-1>', open_details_windows)
     
-    # Создание Scrollbar
+    
     scrollbar = tk.Scrollbar(root, orient='vertical', command=tree.yview)
-    scrollbar.place(x=915, y=60, height=500)  # Размещаем справа от таблицы
+    scrollbar.place(x=915, y=60, height=500)
 
-    # Привязываем Scrollbar к Treeview
+    
     tree.config(yscrollcommand=scrollbar.set)
 
     people = session.query(Person).all()
