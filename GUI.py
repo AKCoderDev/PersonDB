@@ -27,8 +27,10 @@ x+=80
 root.geometry(f"{window_width}x{window_height}+{x}+{y}")
 root.wm_minsize(window_width,window_height)
 
+
 frame = customtkinter.CTkFrame(root, width=300, height=150, corner_radius=10)
 frame.pack(pady=20, padx=20, fill='both', expand=True)
+
 
 def hide_main():
     button_open.place_forget()
@@ -77,6 +79,8 @@ def show_main_from_settings():
     theme_button.place_forget()
 
 #OPEN
+
+
 def setup_style():
     style = ttk.Style()
     style.configure("Treeview.Heading", font=("Helvetica", 12, "bold"), background="#f1f1f1", foreground="#333333")
@@ -111,10 +115,19 @@ def read_base():
     tree.place(x=90, y= 60, width=825, height=500)
 
     tree.bind('<Double-1>', open_details_windows)
+    
+    # Создание Scrollbar
+    scrollbar = tk.Scrollbar(root, orient='vertical', command=tree.yview)
+    scrollbar.place(x=915, y=60, height=500)  # Размещаем справа от таблицы
+
+    # Привязываем Scrollbar к Treeview
+    tree.config(yscrollcommand=scrollbar.set)
 
     people = session.query(Person).all()
     for person in people:
         tree.insert('', tk.END, values=(person.passport, person.first_name, person.last_name, person.age, person.gender, person.phone_number, person.date_of_birth,person.notes))
+    
+    
 
 def open_details_windows(event):
     
@@ -133,6 +146,8 @@ def open_details_windows(event):
     x+=25
     details_window.geometry(f"600x400+{x}+{y}")
     
+   
+
     font = CTkFont(size=20)
 
     passport_label = CTkLabel(details_window, text=f"Passport: {values[0]}", font=font)
@@ -180,6 +195,7 @@ def open_details_windows(event):
             print("No photo available for this person.")
     else:
         print("Person not found in the database.")
+
 
 #Photo
 photo_data = None
