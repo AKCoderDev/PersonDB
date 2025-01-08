@@ -217,6 +217,7 @@ def show_main_from_open():
     button_exit.place(x=40, y=200)
     back_to_main_from_open.place_forget()
     tree.place_forget()
+    Scrollbar.forget()
 
 # CREATE
 def clear_fields():
