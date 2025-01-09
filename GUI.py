@@ -91,6 +91,7 @@ def read_base():
     hide_main()
     setup_style()
     global tree
+    global scrollbar
     back_to_main_from_open.place(x=40, y=470)
     tree = ttk.Treeview(root, columns=('Passport', 'first_name', 'last_name', 'Age','Gender','Phone number','Date of birth','Notes'), show='headings')
 
@@ -217,7 +218,7 @@ def show_main_from_open():
     button_exit.place(x=40, y=200)
     back_to_main_from_open.place_forget()
     tree.place_forget()
-    Scrollbar.forget()
+    scrollbar.place_forget()
 
 # CREATE
 def clear_fields():
