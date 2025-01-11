@@ -147,7 +147,11 @@ def open_details_windows(event):
     x+=25
     details_window.geometry(f"600x400+{x}+{y}")
     
-   
+    def shorten_text(text, max_length = 4):
+        if len(text) > max_length:
+            return text[:max_length] + '...'
+        return text
+    notes_text = shorten_text (values[7])
 
     font = CTkFont(size=20)
 
@@ -172,7 +176,7 @@ def open_details_windows(event):
     date_of_birth_label = CTkLabel(details_window, text=f"Date of birth: {values[6]}", font=font)
     date_of_birth_label.place(x = 30, y = 200)
 
-    notes_label = CTkLabel(details_window, text=f"Notes: {values[7]}", font=font, wraplength=500,justify="left")
+    notes_label = CTkLabel(details_window, text=f"Notes: {notes_text}", font=font, wraplength=500,justify="left")
     notes_label.place(x = 30, y = 230)
 
     person = session.query(Person).filter_by(passport=values[0]).first()
