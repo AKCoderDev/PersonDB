@@ -120,13 +120,18 @@ def read_base():
     
     scrollbar = tk.Scrollbar(root, orient='vertical', command=tree.yview)
     scrollbar.place(x=915, y=60, height=500)
-
+    def shorten_text(text, max_length=4):
+        if len(text) > max_length:
+            return text[:max_length] + '...'
+        return text
     
     tree.config(yscrollcommand=scrollbar.set)
 
     people = session.query(Person).all()
     for person in people:
-        tree.insert('', tk.END, values=(person.passport, person.first_name, person.last_name, person.age, person.gender, person.phone_number, person.date_of_birth,person.notes))
+        notes_shortened = shorten_text(person.notes)
+
+        tree.insert('', tk.END, values=(person.passport, person.first_name, person.last_name, person.age, person.gender, person.phone_number, person.date_of_birth,notes_shortened))
     
     
 
@@ -146,13 +151,7 @@ def open_details_windows(event):
     y = (screen_height - window_height) // 2
     x+=25
     details_window.geometry(f"600x400+{x}+{y}")
-    
-    def shorten_text(text, max_length = 4):
-        if len(text) > max_length:
-            return text[:max_length] + '...'
-        return text
-    notes_text = shorten_text (values[7])
-
+        
     font = CTkFont(size=20)
 
     passport_label = CTkLabel(details_window, text=f"Passport: {values[0]}", font=font)
@@ -178,7 +177,7 @@ def open_details_windows(event):
 
     notes_label = CTkLabel(details_window, text=f"Notes: {notes_text}", font=font, wraplength=500,justify="left")
     notes_label.place(x = 30, y = 230)
-
+    
     person = session.query(Person).filter_by(passport=values[0]).first()
     print(f"Type of person.photo: {type(person.photo)}")
 
